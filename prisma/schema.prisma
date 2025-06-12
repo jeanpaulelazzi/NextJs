@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Appointments {
+  App_ID                                          Int        @id @default(autoincrement())
+  App_Date                                        DateTime?  @db.Date
+  App_PatientID                                   Int?
+  App_DoctorID                                    Int?
+  Doctors_Appointments_App_DoctorIDToDoctors      Doctors?   @relation("Appointments_App_DoctorIDToDoctors", fields: [App_DoctorID], references: [D_ID], onDelete: NoAction, onUpdate: NoAction, map: "App_Doctor")
+  Patients_Appointments_App_PatientIDToPatients   Patients?  @relation("Appointments_App_PatientIDToPatients", fields: [App_PatientID], references: [P_ID], onDelete: NoAction, onUpdate: NoAction, map: "App_Patient")
+  Doctors_Doctors_D_AppointementToAppointments    Doctors[]  @relation("Doctors_D_AppointementToAppointments")
+  Patients_Patients_P_AppointmentIDToAppointments Patients[] @relation("Patients_P_AppointmentIDToAppointments")
+}
+
+model Departments {
+  Dep_Name     String? @db.VarChar(100)
+  Dep_building String? @db.VarChar(100)
+  Dep_floor    String? @db.VarChar(100)
+  Dep_ID       Int     @id @default(autoincrement())
+}
+
+model Doctors {
+  D_FirstName                                       String         @db.VarChar(100)
+  D_LastName                                        String         @db.VarChar(100)
+  D_PhoneNumber                                     Int
+  D_DateOfBirth                                     DateTime       @db.Date
+  D_specialization                                  String         @db.VarChar(100)
+  D_ID                                              Int            @id @default(autoincrement())
+  D_Appointement                                    Int?
+  D_DepartmentID                                    Int?
+  Appointments_Appointments_App_DoctorIDToDoctors   Appointments[] @relation("Appointments_App_DoctorIDToDoctors")
+  Appointments_Doctors_D_AppointementToAppointments Appointments?  @relation("Doctors_D_AppointementToAppointments", fields: [D_Appointement], references: [App_ID], onDelete: NoAction, onUpdate: NoAction, map: "D_AppointmentID")
+  Patients                                          Patients[]
+}
+
+model Patients {
+  P_Fname                                             String         @db.VarChar(100)
+  P_Lname                                             String         @db.VarChar(100)
+  P_Adress                                            String         @db.VarChar(1000)
+  P_PhoneNumber                                       String         @db.VarChar(11)
+  P_DateOfBirth                                       DateTime       @db.Date
+  P_Condition                                         String?        @db.VarChar
+  P_ID                                                Int            @id @default(autoincrement())
+  P_DoctorID                                          Int?
+  P_AppointmentID                                     Int?
+  Appointments_Appointments_App_PatientIDToPatients   Appointments[] @relation("Appointments_App_PatientIDToPatients")
+  Appointments_Patients_P_AppointmentIDToAppointments Appointments?  @relation("Patients_P_AppointmentIDToAppointments", fields: [P_AppointmentID], references: [App_ID], onDelete: NoAction, onUpdate: NoAction, map: "P_AppointmentID")
+  Doctors                                             Doctors?       @relation(fields: [P_DoctorID], references: [D_ID], onDelete: NoAction, onUpdate: NoAction, map: "P_DoctorID")
+}
