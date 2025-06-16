@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -41,6 +40,8 @@ model Doctors {
 }
 
 model Patients {
+  P_Username                                          String         @db.VarChar(100) @default("default") @unique
+  P_Password                                          String         @db.VarChar(100) @default("default")
   P_Fname                                             String         @db.VarChar(100)
   P_Lname                                             String         @db.VarChar(100)
   P_Adress                                            String         @db.VarChar(1000)

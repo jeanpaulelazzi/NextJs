@@ -4,11 +4,15 @@ import { AppService } from './app.service';
 import { DoctorModule } from './doctor/doctor.module';
 import { PatientModule } from './patient/patient.module';
 import { DepartmentsModule } from './departments/departments.module';
-import { PrismaClient } from '@prisma/client';
+import { PrismaService } from './prisma/prisma.service';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './auth/auth/auth.module';
+import { Authservice } from './auth/auth/auth.service';
+import { PatientService } from './patient/patient.service';
 
 @Module({
-  imports: [DoctorModule, PatientModule, DepartmentsModule],
+  imports: [DoctorModule, PatientModule, DepartmentsModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,Authservice,PatientService,PrismaService],
 })
 export class AppModule {}
