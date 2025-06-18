@@ -5,12 +5,12 @@ import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
+
+  // HomePage
   @Get()
   redirect(){
     return 'Homepage'
   }
 
-
-  
   }
 

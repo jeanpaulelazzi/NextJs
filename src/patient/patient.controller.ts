@@ -30,7 +30,6 @@ logout(){
 
 
 // Post
-@Roles(['admin'])
 @Post('/register')
 create(
     @Body()

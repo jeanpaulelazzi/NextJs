@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from 'src/auth/auth/auth.module';
 import { Authservice } from 'src/auth/auth/auth.service';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { Authservice } from 'src/auth/auth/auth.service';
     }),
   ],
   controllers: [PatientController],
-  providers: [PatientService, PrismaService,Authservice],
+  providers: [PatientService, PrismaService,Authservice,UsersService],
 
 })
 export class PatientModule {}

@@ -28,20 +28,22 @@ model Departments {
 model Doctors {
   D_FirstName                                       String         @db.VarChar(100)
   D_LastName                                        String         @db.VarChar(100)
-  D_PhoneNumber                                     Int
   D_DateOfBirth                                     DateTime       @db.Date
   D_specialization                                  String         @db.VarChar(100)
   D_ID                                              Int            @id @default(autoincrement())
   D_Appointement                                    Int?
   D_DepartmentID                                    Int?
+  D_Username                                        String         @unique(map: "D_username") @db.VarChar(100)
+  D_Password                                        String         @db.VarChar(100)
+  D_Phonenumber                                     String?        @db.VarChar(20)
   Appointments_Appointments_App_DoctorIDToDoctors   Appointments[] @relation("Appointments_App_DoctorIDToDoctors")
   Appointments_Doctors_D_AppointementToAppointments Appointments?  @relation("Doctors_D_AppointementToAppointments", fields: [D_Appointement], references: [App_ID], onDelete: NoAction, onUpdate: NoAction, map: "D_AppointmentID")
   Patients                                          Patients[]
 }
 
 model Patients {
-  P_Username                                          String         @db.VarChar(100) @default("default") @unique
-  P_Password                                          String         @db.VarChar(100) @default("default")
+  P_Username                                          String         @unique(map: "P_Username") @default("default") @db.VarChar(100)
+  P_Password                                          String         @default("default") @db.VarChar(100)
   P_Fname                                             String         @db.VarChar(100)
   P_Lname                                             String         @db.VarChar(100)
   P_Adress                                            String         @db.VarChar(1000)
@@ -54,4 +56,11 @@ model Patients {
   Appointments_Appointments_App_PatientIDToPatients   Appointments[] @relation("Appointments_App_PatientIDToPatients")
   Appointments_Patients_P_AppointmentIDToAppointments Appointments?  @relation("Patients_P_AppointmentIDToAppointments", fields: [P_AppointmentID], references: [App_ID], onDelete: NoAction, onUpdate: NoAction, map: "P_AppointmentID")
   Doctors                                             Doctors?       @relation(fields: [P_DoctorID], references: [D_ID], onDelete: NoAction, onUpdate: NoAction, map: "P_DoctorID")
+}
+
+model Users {
+  U_ID       Int     @id @default(autoincrement())
+  U_Username String? @unique(map: "username") @db.VarChar(100)
+  U_Password String? @db.VarChar(1000)
+  U_isAdmin  String? @db.VarChar(15)
 }
