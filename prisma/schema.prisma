@@ -8,14 +8,14 @@ datasource db {
 }
 
 model Appointments {
-  App_ID                                          Int        @id @default(autoincrement())
-  App_Date                                        DateTime?  @db.Date
-  App_PatientID                                   Int?
-  App_DoctorID                                    Int?
-  Doctors_Appointments_App_DoctorIDToDoctors      Doctors?   @relation("Appointments_App_DoctorIDToDoctors", fields: [App_DoctorID], references: [D_ID], onDelete: NoAction, onUpdate: NoAction, map: "App_Doctor")
-  Patients_Appointments_App_PatientIDToPatients   Patients?  @relation("Appointments_App_PatientIDToPatients", fields: [App_PatientID], references: [P_ID], onDelete: NoAction, onUpdate: NoAction, map: "App_Patient")
-  Doctors_Doctors_D_AppointementToAppointments    Doctors[]  @relation("Doctors_D_AppointementToAppointments")
-  Patients_Patients_P_AppointmentIDToAppointments Patients[] @relation("Patients_P_AppointmentIDToAppointments")
+  App_ID                                        Int       @id @default(autoincrement())
+  App_Date                                      DateTime? @db.Date
+  App_PatientID                                 Int?
+  App_DoctorID                                  Int?
+  App_Status                                    String?   @default("Pending") @db.VarChar(15)
+  Doctors_Appointments_App_DoctorIDToDoctors    Doctors?  @relation("Appointments_App_DoctorIDToDoctors", fields: [App_DoctorID], references: [D_ID], onDelete: NoAction, onUpdate: NoAction, map: "App_Doctor")
+  Patients_Appointments_App_PatientIDToPatients Patients? @relation("Appointments_App_PatientIDToPatients", fields: [App_PatientID], references: [P_ID], onDelete: NoAction, onUpdate: NoAction, map: "App_Patient")
+  Doctors_Doctors_D_AppointementToAppointments  Doctors[] @relation("Doctors_D_AppointementToAppointments")
 }
 
 model Departments {
@@ -33,34 +33,34 @@ model Doctors {
   D_ID                                              Int            @id @default(autoincrement())
   D_Appointement                                    Int?
   D_DepartmentID                                    Int?
-  D_Username                                        String         @unique(map: "D_username") @db.VarChar(100)
-  D_Password                                        String         @db.VarChar(100)
   D_Phonenumber                                     String?        @db.VarChar(20)
+  D_UserID                                          Int?
   Appointments_Appointments_App_DoctorIDToDoctors   Appointments[] @relation("Appointments_App_DoctorIDToDoctors")
   Appointments_Doctors_D_AppointementToAppointments Appointments?  @relation("Doctors_D_AppointementToAppointments", fields: [D_Appointement], references: [App_ID], onDelete: NoAction, onUpdate: NoAction, map: "D_AppointmentID")
+  Users                                             Users?         @relation(fields: [D_UserID], references: [U_ID], onDelete: NoAction, onUpdate: NoAction, map: "D_UserID")
   Patients                                          Patients[]
 }
 
 model Patients {
-  P_Username                                          String         @unique(map: "P_Username") @default("default") @db.VarChar(100)
-  P_Password                                          String         @default("default") @db.VarChar(100)
-  P_Fname                                             String         @db.VarChar(100)
-  P_Lname                                             String         @db.VarChar(100)
-  P_Adress                                            String         @db.VarChar(1000)
-  P_PhoneNumber                                       String         @db.VarChar(11)
-  P_DateOfBirth                                       DateTime       @db.Date
-  P_Condition                                         String?        @db.VarChar
-  P_ID                                                Int            @id @default(autoincrement())
-  P_DoctorID                                          Int?
-  P_AppointmentID                                     Int?
-  Appointments_Appointments_App_PatientIDToPatients   Appointments[] @relation("Appointments_App_PatientIDToPatients")
-  Appointments_Patients_P_AppointmentIDToAppointments Appointments?  @relation("Patients_P_AppointmentIDToAppointments", fields: [P_AppointmentID], references: [App_ID], onDelete: NoAction, onUpdate: NoAction, map: "P_AppointmentID")
-  Doctors                                             Doctors?       @relation(fields: [P_DoctorID], references: [D_ID], onDelete: NoAction, onUpdate: NoAction, map: "P_DoctorID")
+  P_Fname                                           String         @db.VarChar(100)
+  P_Lname                                           String         @db.VarChar(100)
+  P_Adress                                          String         @db.VarChar(1000)
+  P_PhoneNumber                                     String         @db.VarChar(11)
+  P_DateOfBirth                                     DateTime       @db.Date
+  P_Condition                                       String?        @db.VarChar
+  P_ID                                              Int            @id @default(autoincrement())
+  P_DoctorID                                        Int?
+  P_UserID                                          Int?
+  Appointments_Appointments_App_PatientIDToPatients Appointments[] @relation("Appointments_App_PatientIDToPatients")
+  Doctors                                           Doctors?       @relation(fields: [P_DoctorID], references: [D_ID], onDelete: NoAction, onUpdate: NoAction, map: "P_DoctorID")
+  Users                                             Users?         @relation(fields: [P_UserID], references: [U_ID], onDelete: NoAction, onUpdate: NoAction, map: "P_UserID")
 }
 
 model Users {
-  U_ID       Int     @id @default(autoincrement())
-  U_Username String? @unique(map: "username") @db.VarChar(100)
-  U_Password String? @db.VarChar(1000)
-  U_isAdmin  String? @db.VarChar(15)
+  U_ID       Int        @id @default(autoincrement())
+  U_Username String?    @unique(map: "username") @db.VarChar(100)
+  U_Password String?    @db.VarChar(1000)
+  U_Role     String?    @db.VarChar(15)
+  Doctors    Doctors[]
+  Patients   Patients[]
 }

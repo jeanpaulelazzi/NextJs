@@ -29,7 +29,7 @@ return 'Welcome Admin'
 // create patient
 @Post('createpatient')
 @UseGuards(AuthGuard,RolesGuard)
-@Roles('admin')
+@Roles('Admin')
 async createpatient(@Body() createpatientdto: CreatePatientDTO){
 const patient = await this.patient.createPatient(createpatientdto)
 return patient
@@ -39,7 +39,7 @@ return patient
                                                 //create doctors
 @Post('createdoctor')
 @UseGuards(AuthGuard,RolesGuard)
-@Roles('admin')
+@Roles('Admin')
 async createDoctors(@Body() createdoctordto: Doctor){
 const doctor = await this.doctor.createDoctors(createdoctordto)
 return doctor
@@ -50,8 +50,7 @@ return doctor
 @Post('createappointement')
 @UseGuards(AuthGuard,RolesGuard)
 @Roles('Admin')
-async createAppointements(@Body() body: {patient: string,doctor: string, appointement_Date: Date}){
-    console.log(body)
+async createAppointements(@Body() body: {patient: number,doctor: number, appointement_Date: Date}){
 const appointement = await this.admin.createAppointement(body)
 
 

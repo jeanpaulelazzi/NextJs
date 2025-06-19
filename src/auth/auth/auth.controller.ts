@@ -8,8 +8,6 @@ export class AuthController {
     constructor(private authService: Authservice){}
 
 
-//@HttpCode(HttpStatus.OK)
-// @UseGuards(AuthGuard)
 @Post('login')
 signIn(@Body() signInDto: {username: string, pass: string}){
 return this.authService.signIn(signInDto.username, signInDto.pass)
@@ -19,7 +17,6 @@ return this.authService.signIn(signInDto.username, signInDto.pass)
 @UseGuards(AuthGuard)
 @Get('profile')
 async getProfile(@Request() req){
-    console.log(req)
     return await this.authService.getAllProfiles(req.user.username)
 }
 

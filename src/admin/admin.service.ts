@@ -12,21 +12,22 @@ export class AdminService {
         private readonly prisma: PrismaService
     ){}
 
+                                    //create An Appointment
 async createAppointement(body){
 const date = new Date(body.appointement_Date)
+console.log(body.appointement_Date)
+console.log(date)
 
 const patient = await this.prisma.patients.findUnique({
     where: {
-        P_Username : body.patient
+        P_ID : body.patient
     },
-    
 });
-
 
 const doctor = await this.prisma.doctors.findUnique({
     
     where: {
-        D_Username : body.doctor
+        D_ID : body.doctor
     }
 });
 
@@ -38,7 +39,9 @@ const appointement =  await this.prisma.appointments.create({
         App_DoctorID : doctor?.D_ID 
     }
 }
-)}
+)}else{
+    console.log("Cannot create an appointment")
+}
  
 }
  }

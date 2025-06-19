@@ -5,11 +5,12 @@ import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
+  constructor(private readonly app : AppService){}
 
   // HomePage
   @Get()
   redirect(){
-    return 'Homepage'
+
   }
 
   }

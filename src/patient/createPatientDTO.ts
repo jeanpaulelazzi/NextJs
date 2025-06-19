@@ -1,6 +1,5 @@
 export class CreatePatientDTO{
-    P_Username: string;
-    P_Password: string;
+   
     P_Fname: string;
     P_Lname: string;
     P_Adress: string;
@@ -10,5 +9,6 @@ export class CreatePatientDTO{
     P_ID: number;
     P_DoctorID: number;
     P_AppointmentID: number;
+    P_UserID: number;
     
 }

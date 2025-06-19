@@ -7,7 +7,7 @@ export class Doctor{
     D_ID: number;
     D_Appointement: number;
     D_DepartmentID: number;
-    D_Username: string;
-    D_Password: string;
+    
+    D_UserID: number;
 
 }
